@@ -1,8 +1,8 @@
 package handler
 
 import (
+	"apigw/middleware"
 	proto "apigw/proto/account"
-	"context"
 	"github.com/gin-gonic/gin"
 	"log"
 	"net/http"
@@ -15,7 +15,8 @@ var (
 func RegisterHandler(c *gin.Context) {
 	username := c.PostForm("username")
 	password := c.PostForm("password")
-	res, err := AccountServiceClient.AccountRegister(context.TODO(), &proto.ReqAccountRegister{
+
+	res, err := AccountServiceClient.AccountRegister(middleware.GetTracerContext(c), &proto.ReqAccountRegister{
 		Username: username,
 		Password: password,
 	})
